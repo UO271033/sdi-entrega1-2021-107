@@ -20,6 +20,12 @@ public class AddOfertaFormValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		Oferta oferta = (Oferta) target;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "titulo", "Error.empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "detalle", "Error.empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cantidad", "Error.empty");
+		if (oferta.getCantidad() < 0) {
+			errors.rejectValue("cantidad", "Error.cantidad.negative");
+		}
+				
 		
 	}
 

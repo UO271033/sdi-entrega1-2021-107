@@ -32,8 +32,8 @@
 
 			<ul class="nav navbar-nav navbar-center"
 				sec:authorize="isAuthenticated()">
-				<li><a th:text=#{userTD.message}>Usuario: <span th:text="${session.uEmail}"></span></a></li>
-				<li><a th:text=#{moneyTD.message}>Dinero: <span th:text="${session.uDinero}"></span><span>€</span></a></li>
+				<li><a><span th:text="${activeUser.email}"></span></a></li>
+				<li><a><span th:text="${activeUser.dinero}"></span>€</a></li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">

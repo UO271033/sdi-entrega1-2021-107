@@ -1,5 +1,6 @@
 package com.uniovi.controllers;
 
+import java.security.Principal;
 import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,42 +37,72 @@ public class OfertasController {
 	private AddOfertaFormValidator addOfertaFormValidator;
 
 	@RequestMapping("/oferta/list")
-	public String getList(Model model) {
+	public String getList(Model model, Principal principal) {
 		model.addAttribute("ofertaList", ofertasService.getOfertas());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 		return "oferta/list";
 	}
 
 	@RequestMapping(value = "/oferta/add", method = RequestMethod.GET)
-	public String setOferta(Model model) {
+	public String setOferta(Model model, Principal principal) {
 		model.addAttribute("oferta", new Oferta());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 		return "oferta/add";
 	}
 
 	@RequestMapping(value = "/oferta/add", method = RequestMethod.POST)
-	public String setOferta(@ModelAttribute Oferta oferta, BindingResult result) {
+	public String setOferta(@ModelAttribute Oferta oferta, BindingResult result, Model model, Principal principal) {
 		addOfertaFormValidator.validate(oferta, result);
 		if (result.hasErrors()) {
 			return "oferta/add";
 		}
 		ofertasService.addOferta(oferta);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 		return "redirect:/oferta/list";
 	}
 
 	@RequestMapping(value = "/oferta/add")
-	public String getOferta(Model model) {
+	public String getOferta(Model model, Principal principal) {
 		model.addAttribute("usersList", usersService.getUsers());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 		return "oferta/add";
 	}
 
 	@RequestMapping(value = "/oferta/delete/{id}")
-	public String deleteOferta(@PathVariable Long id) {
+	public String deleteOferta(@PathVariable Long id, Principal principal, Model model) {
 		ofertasService.deleteOferta(id);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 		return "redirect:/oferta/list";
 	}
 
 	@RequestMapping(value = "/oferta/search", method = RequestMethod.GET)
 	public String listOferta(Model model, Pageable pageable, @RequestParam(required = false) String titleInputSearch,
-			@RequestParam(required = false) boolean noMoney) {
+			@RequestParam(required = false) boolean noMoney, Principal principal) {
 
 		Page<Oferta> ofertas = new PageImpl<Oferta>(new LinkedList<Oferta>());
 
@@ -85,28 +116,42 @@ public class OfertasController {
 		model.addAttribute("ofertas", ofertas.getContent());
 		model.addAttribute("page", ofertas);
 		model.addAttribute("noMoney", noMoney);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 		return "oferta/search";
 	}
 
 	@RequestMapping(value = "/oferta/buy/{id}")
-	public String buyOferta(Model model, @PathVariable Long id) {
+	public String buyOferta(Model model, @PathVariable Long id, Principal principal) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		User activeUser = usersService.getUserByEmail(email);
 
 		boolean noMoney = !usersService.buyOferta(activeUser, ofertasService.getOferta(id));
+		
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 		return "redirect:/oferta/search?noMoney=" + noMoney;
 	}
 
 	@RequestMapping(value = "/oferta/listPurchased")
-	public String buyOferta(Model model) {
+	public String buyOferta(Model model, Principal principal) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		User activeUser = usersService.getUserByEmail(email);
 
 		model.addAttribute("ofertas", ofertasService.getOfertasByBuyer(activeUser));
+		
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 
 		return "oferta/listPurchased";
 	}

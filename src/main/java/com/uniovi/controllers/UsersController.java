@@ -3,8 +3,6 @@ package com.uniovi.controllers;
 import java.security.Principal;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.uniovi.entities.User;
 import com.uniovi.services.RolesService;
 import com.uniovi.services.SecurityService;
@@ -37,8 +36,6 @@ public class UsersController {
 	@Autowired
 	private RolesService rolesService;
 	
-	@Autowired
-	private HttpSession httpSession;
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String signup(Model model) {
@@ -71,29 +68,40 @@ public class UsersController {
 		User activeUser = usersService.getUserByEmail(email);
 		model.addAttribute("email", activeUser.getEmail());
 		User user = usersService.getUserByEmail(principal.getName());
-		httpSession.setAttribute("uEmail", user.getEmail());
-		httpSession.setAttribute("uDinero", user.getDinero());
+		model.addAttribute("activeUser", user);
 		return "home";
 
 	}
 	
 	@RequestMapping(value = { "/user/list" }, method = RequestMethod.GET)
-	public String getList(Model model) {
+	public String getList(Model model, Principal principal) {
 		UserListWrapper wrapper = new UserListWrapper();
 	    wrapper.setUsers(new ArrayList<User>(usersService.getNotAdminUsers()));
 		model.addAttribute("userListWrapper", wrapper);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 		return "user/list";
 
 	}
 	
 	@RequestMapping(value = { "/user/list" }, method = RequestMethod.POST)
-	public String postList(@ModelAttribute UserListWrapper userListWrapper, Model model) {
+	public String postList(@ModelAttribute UserListWrapper userListWrapper, Model model, Principal principal) {
 		
 		if(userListWrapper.getUsers()!=null)
 			usersService.deleteUsers(userListWrapper.getUsers());
 		
 		userListWrapper.setUsers(new ArrayList<User>(usersService.getNotAdminUsers()));
 		model.addAttribute("userListWrapper", userListWrapper);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		model.addAttribute("email", activeUser.getEmail());
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("activeUser", user);
 		return "user/list";
 
 	}
