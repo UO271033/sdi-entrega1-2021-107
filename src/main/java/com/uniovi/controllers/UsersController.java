@@ -13,6 +13,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.uniovi.entities.User;
 import com.uniovi.services.RolesService;
@@ -36,6 +38,8 @@ public class UsersController {
 	@Autowired
 	private RolesService rolesService;
 	
+	private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
+	
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String signup(Model model) {
@@ -53,6 +57,7 @@ public class UsersController {
 		user.setDinero(100);
 		usersService.addUser(user);
 		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
+		logger.debug("Usuario " + user.getEmail() + " añadido correctamente en el sistema");
 		return "redirect:home";
 	}
 	
@@ -69,6 +74,7 @@ public class UsersController {
 		model.addAttribute("email", activeUser.getEmail());
 		User user = usersService.getUserByEmail(principal.getName());
 		model.addAttribute("activeUser", user);
+		logger.debug("Usuario " + user.getEmail() + " identificado correctamente");
 		return "home";
 
 	}
@@ -80,6 +86,7 @@ public class UsersController {
 	
 	@RequestMapping(value = { "/user/list" }, method = RequestMethod.GET)
 	public String getList(Model model, Principal principal) {
+		logger.debug("acceso a /user/list");
 		UserListWrapper wrapper = new UserListWrapper();
 	    wrapper.setUsers(new ArrayList<User>(usersService.getNotAdminUsers()));
 		model.addAttribute("userListWrapper", wrapper);

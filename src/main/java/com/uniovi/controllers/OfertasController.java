@@ -3,6 +3,8 @@ package com.uniovi.controllers;
 import java.security.Principal;
 import java.util.LinkedList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.uniovi.entities.Oferta;
 import com.uniovi.entities.User;
 import com.uniovi.services.OfertasService;
+import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
 import com.uniovi.validators.AddOfertaFormValidator;
 
@@ -35,9 +38,12 @@ public class OfertasController {
 
 	@Autowired
 	private AddOfertaFormValidator addOfertaFormValidator;
+	
+	private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
 
 	@RequestMapping("/oferta/list")
 	public String getList(Model model, Principal principal) {
+		logger.debug("Acceso a /oferta/list");
 		model.addAttribute("ofertaList", ofertasService.getOfertas());
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
@@ -50,6 +56,7 @@ public class OfertasController {
 
 	@RequestMapping(value = "/oferta/add", method = RequestMethod.GET)
 	public String setOferta(Model model, Principal principal) {
+		logger.debug("Acceso a /oferta/add");
 		model.addAttribute("oferta", new Oferta());
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
@@ -79,6 +86,7 @@ public class OfertasController {
 		model.addAttribute("email", activeUser.getEmail());
 		User user = usersService.getUserByEmail(principal.getName());
 		model.addAttribute("activeUser", user);
+		logger.debug("Oferta añadida correctamente");
 		return "redirect:/oferta/list";
 	}
 
@@ -103,6 +111,7 @@ public class OfertasController {
 		model.addAttribute("email", activeUser.getEmail());
 		User user = usersService.getUserByEmail(principal.getName());
 		model.addAttribute("activeUser", user);
+		logger.debug("Oferta eliminada correctamente");
 		return "redirect:/oferta/list";
 	}
 
@@ -110,6 +119,7 @@ public class OfertasController {
 	public String listOferta(Model model, Pageable pageable, @RequestParam(required = false) String titleInputSearch,
 			@RequestParam(required = false) boolean noMoney, Principal principal) {
 
+		logger.debug("Acceso a /oferta/search");
 		Page<Oferta> ofertas = new PageImpl<Oferta>(new LinkedList<Oferta>());
 
 		if (titleInputSearch != null && titleInputSearch != "") {
@@ -149,6 +159,7 @@ public class OfertasController {
 	@RequestMapping(value = "/oferta/listPurchased")
 	public String buyOferta(Model model, Principal principal) {
 
+		logger.debug("Acceso a /oferta/listPurchased");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		User activeUser = usersService.getUserByEmail(email);
