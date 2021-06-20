@@ -68,6 +68,7 @@ public class WallapopTests {
 		driver.quit();
 	}
 	
+	// Registro de Usuario con datos válidos
 	@Test
 	public void PR01() {
 		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
@@ -75,6 +76,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "uwu@gmail.com");
 	}
 	
+	// Registro de Usuario con datos inválidos (email vacío, nombre vacío, apellidos vacíos).
 	@Test
 	public void PR02() {
 		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
@@ -82,6 +84,7 @@ public class WallapopTests {
 		PO_View.checkKey(driver, "Error.empty", PO_Properties.getSPANISH());
 	}
 	
+	// Registro de Usuario con datos inválidos (repetición de contraseña inválida)
 	@Test
 	public void PR03() {
 		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
@@ -89,6 +92,7 @@ public class WallapopTests {
 		PO_View.checkKey(driver, "Error.signup.passwordConfirm.coincidence", PO_Properties.getSPANISH());
 	}
 	
+	// Registro de Usuario con datos inválidos (email existente).
 	@Test
 	public void PR04() {
 		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
@@ -96,6 +100,7 @@ public class WallapopTests {
 		PO_View.checkKey(driver, "Error.signup.email.duplicate", PO_Properties.getSPANISH());
 	}
 	
+	// Inicio de sesión con datos válidos (administrador).
 	@Test
 	public void PR05() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -103,6 +108,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "admin@email.com");
 	}
 	
+	// Inicio de sesión con datos válidos (usuario estándar).
 	@Test
 	public void PR06() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -110,6 +116,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "uwu@gmail.com");
 	}
 	
+	// Inicio de sesión con datos inválidos (usuario estándar, campo email y contraseña vacíos)
 	@Test
 	public void PR07() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -117,6 +124,7 @@ public class WallapopTests {
 		PO_View.checkKey(driver, "Error.signup.email.wrong", PO_Properties.getSPANISH());
 	}
 	
+	// Inicio de sesión con datos válidos (usuario estándar, email existente, pero contraseña incorrecta).
 	@Test
 	public void PR08() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -124,6 +132,7 @@ public class WallapopTests {
 		PO_View.checkKey(driver, "Error.login.password.wrong", PO_Properties.getSPANISH());
 	}
 	
+	// Inicio de sesión con datos inválidos (usuario estándar, email no existente en la aplicación).
 	@Test
 	public void PR09() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -131,6 +140,7 @@ public class WallapopTests {
 		PO_View.checkKey(driver, "Error.signup.email.wrong", PO_Properties.getSPANISH());
 	}
 	
+	// Hacer click en la opción de salir de sesión y comprobar que se redirige a la página de inicio de sesión (Login)
 	@Test
 	public void PR10() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -140,11 +150,13 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Comprobar que el botón cerrar sesión no está visible si el usuario no está autenticado.
 	@Test
 	public void PR11() {
 		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Desconectar", PO_View.getTimeout());
 	}
 	
+	// Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema. 
 	@Test
 	public void PR12() {
 		
@@ -185,6 +197,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "uw5@gmail.com");
 	}
 	
+	// Ir a la lista de usuarios, borrar el primer usuario de la lista, comprobar que la lista se actualiza y que el usuario desaparece
 	@Test
 	public void PR13() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -202,7 +215,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "uw5@gmail.com");
 	}
 	
-	
+	// Ir a la lista de usuarios, borrar el último usuario de la lista, comprobar que la lista se actualiza	y que el usuario desaparece.
 	@Test
 	public void PR14() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -219,7 +232,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "uw4@gmail.com");
 	}
 	
-	
+	// Ir a la lista de usuarios, borrar 3 usuarios, comprobar que la lista se actualiza y que los usuarios desaparecen.
 	@Test
 	public void PR15() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -244,7 +257,7 @@ public class WallapopTests {
 	
 	
 	
-	
+	// Ir al formulario de alta de oferta, rellenarla con datos válidos y pulsar el botón Submit. Comprobar que la oferta sale en el listado de ofertas de dicho usuario.
 	@Test
 	public void PR16() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -260,6 +273,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Ir al formulario de alta de oferta, rellenarla con datos inválidos (campo título vacío) y pulsar	el botón Submit. Comprobar que se muestra el mensaje de campo obligatorio
 	@Test
 	public void PR17() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -275,6 +289,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Mostrar el listado de ofertas para dicho usuario y comprobar que se muestran todas los que existen para este usuario. 
 	@Test
 	public void PR18() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -291,6 +306,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Ir a la lista de ofertas, borrar la primera oferta de la lista, comprobar que la lista se actualiza y que la oferta desaparece.
 	@Test
 	public void PR19() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -308,6 +324,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Ir a la lista de ofertas, borrar la última oferta de la lista, comprobar que la lista se actualiza y que la oferta desaparece.
 	@Test
 	public void PR20() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -325,6 +342,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Hacer una búsqueda con el campo vacío y comprobar que se muestra la página que corresponde con el listado de las ofertas existentes en el sistema
 	@Test
 	public void PR21() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -340,6 +358,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Hacer una búsqueda escribiendo en el campo un texto que no exista y comprobar que se	muestra la página que corresponde, con la lista de ofertas vacía
 	@Test
 	public void PR22() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -355,6 +374,8 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Sobre una búsqueda determinada (a elección del desarrollador), comprar una oferta que deja un saldo positivo en el contador del comprador.
+	// Comprobar que el contador se actualiza correctamente en la vista del comprador.
 	@Test
 	public void PR23() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -373,6 +394,8 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Sobre una búsqueda determinada (a elección del desarrollador), comprar una oferta que deja un saldo 0 en el contador del comprador.
+	// Comprobar que el contador se actualiza correctamente en la vista del comprador. 
 	@Test
 	public void PR24() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -391,6 +414,8 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Sobre una búsqueda determinada (a elección del desarrollador), intentar comprar una oferta que esté por encima de saldo disponible del comprador.
+	// Y comprobar que se muestra el mensaje de	saldo no suficiente.
 	@Test
 	public void PR25() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -408,6 +433,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Ir a la opción de ofertas compradas del usuario y mostrar la lista. Comprobar que aparecen las ofertas que deben aparecer.
 	@Test
 	public void PR26() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -424,6 +450,8 @@ public class WallapopTests {
 		
 	}
 	
+	// Visualizar al menos cuatro páginas haciendo el cambio español/inglés/español	(comprobando que algunas de las etiquetas cambian al idioma correspondiente).
+	// Página principal/Opciones principales de usuario/Listado de usuarios /Vista de alta de oferta.
 	@Test
 	public void PR27() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -478,6 +506,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
+	// Intentar acceder sin estar autenticado a la opción de listado de usuarios del administrador. Se deberá volver al formulario de login.
 	@Test
 	public void PR28() {
 		driver.navigate().to("http://localhost:8080/user/list");
@@ -486,6 +515,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Password");
 	}
 	
+	// Intentar acceder sin estar autenticado a la opción de listado de ofertas propias de un usuario estándar. Se deberá volver al formulario de login
 	@Test
 	public void PR29() {
 		driver.navigate().to("http://localhost:8080/oferta/list");
@@ -494,6 +524,7 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "Password");
 	}
 	
+	// Estando autenticado como usuario estándar intentar acceder a la opción de listado de	usuarios del administrador. Se deberá indicar un mensaje de acción prohibida.
 	@Test
 	public void PR30() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");

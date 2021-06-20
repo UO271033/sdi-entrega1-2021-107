@@ -107,7 +107,7 @@ public class UsersController {
 		model.addAttribute("email", activeUser.getEmail());
 		User user = usersService.getUserByEmail(principal.getName());
 		model.addAttribute("activeUser", user);
-		return "user/list";
+		return "redirect:user/list";
 
 	}
 		
