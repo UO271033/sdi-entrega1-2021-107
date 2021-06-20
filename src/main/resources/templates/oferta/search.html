@@ -36,7 +36,7 @@
 						<td th:text="${oferta.titulo}"></td>
 						<td th:text="${oferta.detalle}"></td>
 						<td th:text="${oferta.cantidad}"></td>
-						<td><a th:if="${oferta.comprada == false}" th:href="${'/oferta/buy/' + oferta.id}" th:text="#{buy.message}"></a></td>
+						<td><a name="buyOferta" th:if="${oferta.comprada == false}" th:href="${'/oferta/buy/' + oferta.id}" th:text="#{buy.message}"></a></td>
 						<td><p th:if="${oferta.comprada == true}" th:text="#{soldOut.message}">Vendida</p></td>
 					</tr>
 				</tbody>

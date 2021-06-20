@@ -60,7 +60,7 @@ public class InsertSampleDataService {
 		Set<Oferta> user3Ofertas = new HashSet<Oferta>() {
 			{
 				add(new Oferta("Dishonored","Para xbox360, precintado",30.0,user3));
-				add(new Oferta("Deus Ex","Original (2000)",9.99,user3));
+				add(new Oferta("Deus Ex","Original (2000)",11.77,user3));
 				add(new Oferta("Dark Souls 3","Edición especial",88.23,user3));
 				add(new Oferta("MGS3 Snake Eater","Para xbox360",20.0,user3));
 			}

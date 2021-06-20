@@ -73,6 +73,11 @@ public class UsersController {
 
 	}
 	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String signup(Model model, Principal principal) {
+		return "redirect:home";
+	}
+	
 	@RequestMapping(value = { "/user/list" }, method = RequestMethod.GET)
 	public String getList(Model model, Principal principal) {
 		UserListWrapper wrapper = new UserListWrapper();

@@ -20,6 +20,7 @@ import com.uniovi.tests.pageobjects.PO_LoginView;
 import com.uniovi.tests.pageobjects.PO_PrivateView;
 import com.uniovi.tests.pageobjects.PO_Properties;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
+import com.uniovi.tests.pageobjects.PO_SearchOferta;
 import com.uniovi.tests.pageobjects.PO_UsersView;
 import com.uniovi.tests.pageobjects.PO_View;
 import com.uniovi.tests.util.SeleniumUtils;
@@ -235,9 +236,9 @@ public class WallapopTests {
 		PO_View.checkElement(driver, "text", "uw4@gmail.com");
 		PO_View.checkElement(driver, "text", "M4ras@gmail.com");
 		PO_View.checkElement(driver, "text", "12_asMar@gmail.com");
-		
-		
-		
+
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
 	
@@ -255,6 +256,8 @@ public class WallapopTests {
 		elementos.get(0).click();
 		PO_PrivateView.fillFormAddOferta(driver, "titulo1", "detalle1", "8");
 		elementos = PO_View.checkElement(driver, "text", "titulo1");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
 	@Test
@@ -268,6 +271,8 @@ public class WallapopTests {
 		elementos.get(0).click();
 		PO_PrivateView.fillFormAddOferta(driver, "", "detalle1", "8");
 		PO_View.checkKey(driver, "Error.empty", PO_Properties.getSPANISH());
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
 	@Test
@@ -282,6 +287,8 @@ public class WallapopTests {
 		PO_PrivateView.fillFormAddOferta(driver, "titulo2", "detalle2", "8");
 		elementos = PO_View.checkElement(driver, "text", "titulo1");
 		elementos = PO_View.checkElement(driver, "text", "titulo2");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
 	@Test
@@ -297,6 +304,8 @@ public class WallapopTests {
 				"//td[contains(text(), 'titulo1')]/following-sibling::*/a[contains(@href, 'oferta/delete')]");
 		elementos.get(0).click();
 		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "titulo1", PO_View.getTimeout());
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
 	}
 	
 	@Test
@@ -312,6 +321,187 @@ public class WallapopTests {
 				"//td[contains(text(), 'titulo2')]/following-sibling::*/a[contains(@href, 'oferta/delete')]");
 		elementos.get(0).click();
 		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "titulo2", PO_View.getTimeout());
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+	}
+	
+	@Test
+	public void PR21() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "uwu@gmail.com", "77777");
+		PO_View.checkElement(driver, "text", "uwu@gmail.com");
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'ofertas-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'oferta/search')]");
+		elementos.get(0).click();
+		PO_SearchOferta.searchOferta(driver, "");
+		PO_View.checkElement(driver, "text", "Deus Ex");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+	}
+	
+	@Test
+	public void PR22() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "uwu@gmail.com", "77777");
+		PO_View.checkElement(driver, "text", "uwu@gmail.com");
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'ofertas-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'oferta/search')]");
+		elementos.get(0).click();
+		PO_SearchOferta.searchOferta(driver, "asdfasdf");
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Deus Ex", PO_View.getTimeout());
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+	}
+	
+	@Test
+	public void PR23() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "uwu@gmail.com", "77777");
+		PO_View.checkElement(driver, "text", "uwu@gmail.com");
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'ofertas-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'oferta/search')]");
+		elementos.get(0).click();
+		PO_SearchOferta.searchOferta(driver, "Deus Ex");
+		PO_View.checkElement(driver, "text", "Deus Ex");
+		PO_SearchOferta.buyOferta(driver);
+		PO_View.checkElement(driver, "text", "Vendida");
+		PO_View.checkElement(driver, "text", "88.23");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+	}
+	
+	@Test
+	public void PR24() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "uwu@gmail.com", "77777");
+		PO_View.checkElement(driver, "text", "uwu@gmail.com");
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'ofertas-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'oferta/search')]");
+		elementos.get(0).click();
+		PO_SearchOferta.searchOferta(driver, "Dark Souls");
+		PO_View.checkElement(driver, "text", "Dark Souls");
+		PO_SearchOferta.buyOferta(driver);
+		PO_View.checkElement(driver, "text", "Vendida");
+		PO_View.checkElement(driver, "text", "0.0");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+	}
+	
+	@Test
+	public void PR25() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "uwu@gmail.com", "77777");
+		PO_View.checkElement(driver, "text", "uwu@gmail.com");
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'ofertas-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'oferta/search')]");
+		elementos.get(0).click();
+		PO_SearchOferta.searchOferta(driver, "MGS3");
+		PO_View.checkElement(driver, "text", "MGS3");
+		PO_SearchOferta.buyOferta(driver);
+		PO_View.checkKey(driver, "noMoney.message", PO_Properties.getSPANISH());
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+	}
+	
+	@Test
+	public void PR26() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "uwu@gmail.com", "77777");
+		PO_View.checkElement(driver, "text", "uwu@gmail.com");
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'ofertas-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'oferta/listPurchased')]");
+		elementos.get(0).click();
+		PO_View.checkElement(driver, "text", "Deus Ex");
+		PO_View.checkElement(driver, "text", "Dark Souls");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+		
+	}
+	
+	@Test
+	public void PR27() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "admin@email.com", "admin");
+		PO_View.checkElement(driver, "text", "admin@email.com");
+		PO_View.checkKey(driver,"registeredAs.message", PO_Properties.getSPANISH());
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'btnLanguage')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@id, 'btnEnglish')]");
+		elementos.get(0).click();
+		PO_View.checkKey(driver,"registeredAs.message", PO_Properties.getENGLISH());
+		elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'btnLanguage')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@id, 'btnSpanish')]");
+		elementos.get(0).click();
+		PO_View.checkKey(driver,"logout.message", PO_Properties.getSPANISH());
+		elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'btnLanguage')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@id, 'btnEnglish')]");
+		elementos.get(0).click();
+		PO_View.checkKey(driver,"logout.message", PO_Properties.getENGLISH());
+		elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'btnLanguage')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@id, 'btnSpanish')]");
+		elementos.get(0).click();
+		PO_HomeView.clickOption(driver, "user/list", "class", "btn btn-danger");
+		PO_View.checkKey(driver,"usersListText.message", PO_Properties.getSPANISH());
+		elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'btnLanguage')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@id, 'btnEnglish')]");
+		elementos.get(0).click();
+		PO_View.checkKey(driver,"usersListText.message", PO_Properties.getENGLISH());
+		elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'btnLanguage')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@id, 'btnSpanish')]");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'ofertas-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'oferta/add')]");
+		elementos.get(0).click();
+		PO_View.checkKey(driver,"amount.message", PO_Properties.getSPANISH());
+		elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'btnLanguage')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@id, 'btnEnglish')]");
+		elementos.get(0).click();
+		PO_View.checkKey(driver,"amount.message", PO_Properties.getENGLISH());
+		elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'btnLanguage')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@id, 'btnSpanish')]");
+		elementos.get(0).click();
+		PO_HomeView.clickOption(driver, "logout", "class", "btn-primary");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+	}
+	
+	@Test
+	public void PR28() {
+		driver.navigate().to("http://localhost:8080/user/list");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+		PO_View.checkElement(driver, "text", "Email");
+		PO_View.checkElement(driver, "text", "Password");
+	}
+	
+	@Test
+	public void PR29() {
+		driver.navigate().to("http://localhost:8080/oferta/list");
+		PO_View.checkElement(driver, "text", "Iniciar sesión");
+		PO_View.checkElement(driver, "text", "Email");
+		PO_View.checkElement(driver, "text", "Password");
+	}
+	
+	@Test
+	public void PR30() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LoginView.fillForm(driver, "uwu@gmail.com", "77777");
+		PO_View.checkElement(driver, "text", "uwu@gmail.com");
+		driver.navigate().to("http://localhost:8080/user/list");
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Usuarios", PO_View.getTimeout());
+		
 	}
 
 }

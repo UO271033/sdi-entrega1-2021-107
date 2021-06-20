@@ -64,6 +64,12 @@ public class OfertasController {
 	public String setOferta(@ModelAttribute Oferta oferta, BindingResult result, Model model, Principal principal) {
 		addOfertaFormValidator.validate(oferta, result);
 		if (result.hasErrors()) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String email = auth.getName();
+			User activeUser = usersService.getUserByEmail(email);
+			model.addAttribute("email", activeUser.getEmail());
+			User user = usersService.getUserByEmail(principal.getName());
+			model.addAttribute("activeUser", user);
 			return "oferta/add";
 		}
 		ofertasService.addOferta(oferta);
